@@ -1,0 +1,8 @@
+/* magicMice — Localizable strings (English) */
+
+"app.tagline" = "Your iPad. Reimagined as a keyboard.";
+"onboarding.connect.title" = "Connect Your Display";
+"onboarding.connect.subtitle" = "Connect USB-C and enable Stage Manager.";
+"onboarding.ready.title" = "You're Ready";
+"settings.title" = "Settings";
+"macro.new" = "New";
