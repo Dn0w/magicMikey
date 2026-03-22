@@ -20,8 +20,7 @@ struct RootView: View {
 
     var body: some View {
         GeometryReader { geo in
-            let kh = computeKeyHeight(totalHalf: keyboardHeight(geo.size.height))
-            ZStack(alignment: .topTrailing) {
+            ZStack {
                 Color(hex: "#0A0A0F").ignoresSafeArea()
 
                 VStack(spacing: 0) {
@@ -29,10 +28,6 @@ struct RootView: View {
                     bottomHalf(geo: geo)
                 }
 
-                // Floating controls pinned top-right, same height as smart bar row
-                floatingControls(keyHeight: kh)
-
-                // External display warning banner
                 if !displayMonitor.isExternalDisplayConnected {
                     noDisplayBanner
                 }
@@ -55,11 +50,14 @@ struct RootView: View {
     @ViewBuilder
     private func topHalf(geo: GeometryProxy) -> some View {
         let halfH = keyboardHeight(geo.size.height)
-
         let kh = computeKeyHeight(totalHalf: halfH)
 
         VStack(spacing: 0) {
-            MacroBarView(showFKeys: $showFKeys, rowHeight: kh, onSettings: { showSettings = true })
+            MacroBarView(showFKeys: $showFKeys, rowHeight: kh,
+                         leftIcon: trackpadVisible ? "hand.point.up.left.fill" : "hand.point.up.left",
+                         leftIconActive: trackpadVisible,
+                         onLeftAction: { trackpadVisible.toggle() },
+                         onSettings: { showSettings = true })
                 .padding(.horizontal, 8)
                 .padding(.top, 6)
                 .padding(.bottom, 2)
@@ -95,20 +93,10 @@ struct RootView: View {
 
     /// Distributes the top half across 6 equal rows: smart bar + 5 keyboard rows.
     private func computeKeyHeight(totalHalf: CGFloat) -> CGFloat {
-        let rowGaps: CGFloat = 4 * 5       // 4 gaps between 5 keyboard rows (gap = 5pt)
-        let vertPadding: CGFloat = 6 + 2 + 8  // macro top pad + macro bottom pad + keyboard bottom pad
-
+        let rowGaps: CGFloat = 4 * 5
+        let vertPadding: CGFloat = 6 + 2 + 8
         let available = totalHalf - rowGaps - vertPadding
         return max(36, floor(available / 6))
-    }
-
-    // MARK: - Floating controls
-
-    private func floatingControls(keyHeight: CGFloat) -> some View {
-        let btnH = keyHeight - 12
-        return trackpadToggle(keyHeight: btnH)
-            .padding(.top, 12)
-            .padding(.trailing, 8)
     }
 
     // MARK: - No display banner
@@ -139,18 +127,5 @@ struct RootView: View {
         )
         .frame(maxWidth: 340)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-    }
-
-    private func trackpadToggle(keyHeight: CGFloat) -> some View {
-        Button { trackpadVisible.toggle() } label: {
-            Image(systemName: trackpadVisible ? "hand.point.up.left.fill" : "hand.point.up.left")
-                .font(.system(size: 14))
-                .foregroundColor(trackpadVisible ? Color(hex: "#4A9EFF") : Color(hex: "#555566"))
-                .frame(width: keyHeight, height: keyHeight)
-                .background(
-                    RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
-                )
-        }
     }
 }

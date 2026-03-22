@@ -23,6 +23,9 @@ class KeyboardViewController: UIInputViewController {
         router.sendCommand = { [weak self] input, modifiers in
             self?.handleCommand(input: input, modifiers: modifiers)
         }
+        router.dismissKeyboard = { [weak self] in
+            self?.dismissKeyboard()
+        }
 
         // Build SwiftUI view tree
         let container = try? ModelContainer(for: MacroSlot.self)

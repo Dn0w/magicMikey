@@ -17,7 +17,11 @@ struct ExtensionKeyboardView: View {
         GeometryReader { geo in
             let kh = computeKeyHeight(totalHeight: geo.size.height)
             VStack(spacing: 0) {
-                MacroBarView(showFKeys: $showFKeys, rowHeight: kh, onSettings: { showSettings = true })
+                MacroBarView(showFKeys: $showFKeys, rowHeight: kh,
+                             leftIcon: "keyboard.chevron.compact.down",
+                             leftIconActive: false,
+                             onLeftAction: { router.dismissKeyboard() },
+                             onSettings: { showSettings = true })
                     .padding(.horizontal, 8)
                     .padding(.top, 6)
                     .padding(.bottom, 2)

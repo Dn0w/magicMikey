@@ -7,6 +7,7 @@ final class InputRouter: ObservableObject {
     var insertText: (String) -> Void = { _ in }
     var deleteBackward: () -> Void = {}
     var sendCommand: (String, UIKeyModifierFlags) -> Void = { _, _ in }
+    var dismissKeyboard: () -> Void = {}
 
     /// Maps a MacroSlot's HID keyCode + modifiers and fires sendCommand.
     func sendMacro(keyCode: Int, modifiers: Int) {

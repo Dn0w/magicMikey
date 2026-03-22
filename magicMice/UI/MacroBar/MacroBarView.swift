@@ -5,6 +5,9 @@ struct MacroBarView: View {
     @EnvironmentObject var router: InputRouter
     @Binding var showFKeys: Bool
     var rowHeight: CGFloat = 60
+    var leftIcon: String? = nil
+    var leftIconActive: Bool = false
+    var onLeftAction: (() -> Void)? = nil
     var onSettings: (() -> Void)? = nil
     @Query(sort: \MacroSlot.sortOrder) var slots: [MacroSlot]
     @Environment(\.modelContext) private var context
@@ -29,6 +32,20 @@ struct MacroBarView: View {
                 }
             }
             .frame(maxWidth: .infinity)
+
+            if let leftIcon, let onLeftAction {
+                Button { onLeftAction() } label: {
+                    Image(systemName: leftIcon)
+                        .font(.system(size: 14))
+                        .foregroundColor(leftIconActive ? Color(hex: "#4A9EFF") : Color(hex: "#888899"))
+                        .frame(width: btnH, height: btnH)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
+                                .overlay(RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                        )
+                }
+            }
 
             if let onSettings {
                 Button { onSettings() } label: {
