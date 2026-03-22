@@ -10,6 +10,8 @@ class KeyboardViewController: UIInputViewController {
     private let router = InputRouter()
     private var heightConstraint: NSLayoutConstraint?
 
+    override var needsInputModeSwitchKey: Bool { false }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
