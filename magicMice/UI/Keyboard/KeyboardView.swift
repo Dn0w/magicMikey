@@ -10,6 +10,7 @@ struct KeyboardView: View {
 
     @State private var isFunctionRowExpanded = false
     @State private var isUpperCase = false
+    @State private var accentPopup: (variants: [String], frame: CGRect)? = nil
 
     private let hPad: CGFloat = 8
     private let gap:  CGFloat = 5
@@ -18,24 +19,53 @@ struct KeyboardView: View {
 
     var body: some View {
         GeometryReader { geo in
-            // Stagger reference: QWERTY row = Tab(1.5kw) + 13 letters + 13 gaps
-            // → 14.5·kw + 13·gap = avail  →  kw = (avail − 13·gap) / 14.5
+            // Stagger reference: QWERTY row = Tab(1.25kw) + 13 letters + 13 gaps
+            // → 14.25·kw + 13·gap = avail  →  kw = (avail − 13·gap) / 14.25
             let avail = geo.size.width - hPad * 2
-            let kw    = floor((avail - 13 * gap) / 14.5)
+            let kw    = floor((avail - 13 * gap) / 14.25)
 
-            VStack(spacing: 0) {
-                FunctionRowView(layout: layout, onKey: handleKey,
-                                isExpanded: $isFunctionRowExpanded)
+            ZStack(alignment: .topLeading) {
+                VStack(spacing: 0) {
+                    FunctionRowView(layout: layout, onKey: handleKey,
+                                    isExpanded: $isFunctionRowExpanded)
 
-                VStack(spacing: gap) {
-                    numberRow(kw: kw, avail: avail)   // all uniform keys, wider delete
-                    topRow(kw: kw, avail: avail)       // Tab(fills≈1.50kw) + 13 letters
-                    homeRow(kw: kw, avail: avail)      // Caps(1.75kw) + 11 letters + Return(≈1.75kw)
-                    bottomRow(kw: kw)                  // LS(fill≈2kw) + 10 letters + RS(2.5kw)
-                    spaceRow(kw: kw)                   // mods + space + right mods + arrows
+                    VStack(spacing: gap) {
+                        numberRow(kw: kw, avail: avail)
+                        topRow(kw: kw, avail: avail)
+                        homeRow(kw: kw, avail: avail)
+                        bottomRow(kw: kw)
+                        spaceRow(kw: kw)
+                    }
+                    .padding(.horizontal, hPad)
+                    .padding(.bottom, 8)
                 }
-                .padding(.horizontal, hPad)
-                .padding(.bottom, 8)
+
+                // Accent popup overlay
+                if let popup = accentPopup {
+                    // Dismiss backdrop
+                    Color.clear
+                        .contentShape(Rectangle())
+                        .onTapGesture { accentPopup = nil }
+
+                    // Position popup above the key that triggered it
+                    let keyOrigin = popup.frame.origin
+                    let kbOrigin  = geo.frame(in: .global).origin
+                    let localX    = keyOrigin.x - kbOrigin.x
+                    let localY    = keyOrigin.y - kbOrigin.y
+
+                    // Rough popup width estimate (36+4 per char + 16 padding)
+                    let popupW    = CGFloat(popup.variants.count) * 40 + 16
+                    let clampedX  = min(max(localX, 4), geo.size.width - popupW - 4)
+
+                    AccentPopupView(variants: popup.variants) { accent in
+                        router.deleteBackward()
+                        router.insertText(accent)
+                        accentPopup = nil
+                        modifierState.consumeAfterKeypress()
+                    }
+                    .offset(x: clampedX, y: max(0, localY - 56))
+                    .zIndex(10)
+                }
             }
         }
         .background(Color(hex: "#0A0A0F"))
@@ -50,13 +80,15 @@ struct KeyboardView: View {
                             - CGFloat(layout.numberRow.count) * gap
         HStack(spacing: gap) {
             ForEach(layout.numberRow) { key in
-                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight) { handleKey(key) }
+                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight,
+                        onPress: { handleKey(key) })
                     .frame(width: kw, height: keyHeight)
             }
-            KeyView(key: Key("⌫", type: .action), isArmed: false, keyHeight: keyHeight) {
+            KeyView(key: Key("⌫", type: .action), isArmed: false, keyHeight: keyHeight,
+                    onPress: {
                 HapticEngine.shared.keyTap()
                 router.deleteBackward()
-            }
+            })
             .frame(width: max(kw, deleteW), height: keyHeight)
         }
     }
@@ -68,68 +100,73 @@ struct KeyboardView: View {
                          - CGFloat(layout.topRow.count) * gap
         HStack(spacing: gap) {
             KeyView(key: Key("⇥", character: "\t", type: .action),
-                    isArmed: false, keyHeight: keyHeight) {
-                handleKey(Key("⇥", character: "\t"))
-            }
+                    isArmed: false, keyHeight: keyHeight,
+                    onPress: { handleKey(Key("⇥", character: "\t")) })
             .frame(width: max(kw, tabW), height: keyHeight)
 
             ForEach(layout.topRow) { key in
-                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight) { handleKey(key) }
+                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight,
+                        onPress: { handleKey(key) },
+                        onLongPress: key.accentVariants.isEmpty ? nil : showAccentPopup)
                     .frame(width: kw, height: keyHeight)
             }
         }
     }
 
     /// Home row: Caps(1.75kw) + 11 fixed-width keys + Return(fills ≈ 1.75kw).
-    /// Stagger offset = 1.75kw.
     @ViewBuilder
     private func homeRow(kw: CGFloat, avail: CGFloat) -> some View {
         HStack(spacing: gap) {
             KeyView(key: Key("⇪", type: .modifier),
-                    isArmed: modifierState.isCapsLockOn, keyHeight: keyHeight) {
+                    isArmed: modifierState.isCapsLockOn, keyHeight: keyHeight,
+                    onPress: {
                 HapticEngine.shared.modifierArmed()
                 modifierState.toggle(.alphaShift)
                 isUpperCase = modifierState.isCapsLockOn
-            }
+            })
             .frame(width: floor(kw * 1.75), height: keyHeight)
 
             ForEach(layout.homeRow) { key in
-                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight) { handleKey(key) }
+                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight,
+                        onPress: { handleKey(key) },
+                        onLongPress: key.accentVariants.isEmpty ? nil : showAccentPopup)
                     .frame(width: kw, height: keyHeight)
             }
 
             KeyView(key: Key("⏎", character: "\n", type: .action),
-                    isArmed: false, keyHeight: keyHeight) {
-                handleKey(Key("⏎", character: "\n"))
-            }
+                    isArmed: false, keyHeight: keyHeight,
+                    onPress: { handleKey(Key("⏎", character: "\n")) })
             .frame(maxWidth: .infinity, minHeight: keyHeight, maxHeight: keyHeight)
         }
     }
 
     /// Bottom row: LeftShift(fills ≈ 2kw) + 10 fixed-width keys + RightShift(2.5kw).
-    /// Stagger offset = ~2kw, giving 0.25kw incremental stagger per row.
     @ViewBuilder
     private func bottomRow(kw: CGFloat) -> some View {
         HStack(spacing: gap) {
             KeyView(key: Key("⇧", type: .modifier),
-                    isArmed: modifierState.isShiftArmed, keyHeight: keyHeight) {
+                    isArmed: modifierState.isShiftArmed, keyHeight: keyHeight,
+                    onPress: {
                 HapticEngine.shared.modifierArmed()
                 modifierState.toggle(.shift)
                 isUpperCase = modifierState.isShiftArmed || modifierState.isCapsLockOn
-            }
+            })
             .frame(maxWidth: .infinity, minHeight: keyHeight, maxHeight: keyHeight)
 
             ForEach(layout.bottomRow) { key in
-                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight) { handleKey(key) }
+                KeyView(key: displayKey(key), isArmed: false, keyHeight: keyHeight,
+                        onPress: { handleKey(key) },
+                        onLongPress: key.accentVariants.isEmpty ? nil : showAccentPopup)
                     .frame(width: kw, height: keyHeight)
             }
 
             KeyView(key: Key("⇧", type: .modifier),
-                    isArmed: modifierState.isShiftArmed, keyHeight: keyHeight) {
+                    isArmed: modifierState.isShiftArmed, keyHeight: keyHeight,
+                    onPress: {
                 HapticEngine.shared.modifierArmed()
                 modifierState.toggle(.shift)
                 isUpperCase = modifierState.isShiftArmed || modifierState.isCapsLockOn
-            }
+            })
             .frame(width: floor(kw * 2.5), height: keyHeight)
         }
     }
@@ -146,9 +183,8 @@ struct KeyboardView: View {
             mod("⌘", .command,   w: floor(kw * 1.2), h: keyHeight, word: "command")
 
             KeyView(key: Key("space", character: " ", type: .space),
-                    isArmed: false, keyHeight: keyHeight) {
-                handleKey(Key("space", character: " "))
-            }
+                    isArmed: false, keyHeight: keyHeight,
+                    onPress: { handleKey(Key("space", character: " ")) })
             .frame(maxWidth: .infinity, minHeight: keyHeight, maxHeight: keyHeight)
 
             mod("⌘", .command,   w: floor(kw * 0.85), h: keyHeight, word: "command")
@@ -188,11 +224,12 @@ struct KeyboardView: View {
 
     @ViewBuilder
     private func arrow(_ label: String, _ input: String, kw: CGFloat, h: CGFloat) -> some View {
-        KeyView(key: Key(label, type: .action), isArmed: false, keyHeight: h) {
+        KeyView(key: Key(label, type: .action), isArmed: false, keyHeight: h,
+                onPress: {
             HapticEngine.shared.keyTap()
             router.sendCommand(input, modifierState.activeModifiers)
             modifierState.consumeAfterKeypress()
-        }
+        })
         .frame(width: kw, height: h)
     }
 
@@ -201,11 +238,18 @@ struct KeyboardView: View {
                      w: CGFloat, h: CGFloat, word: String? = nil) -> some View {
         KeyView(key: Key(label, secondary: word, type: .modifier),
                 isArmed: modifierState.activeModifiers.contains(flag),
-                keyHeight: h) {
+                keyHeight: h,
+                onPress: {
             HapticEngine.shared.modifierArmed()
             modifierState.toggle(flag)
-        }
+        })
         .frame(width: w, height: h)
+    }
+
+    // MARK: - Long-press accent popup
+
+    private func showAccentPopup(_ variants: [String], _ frame: CGRect) {
+        accentPopup = (variants: variants, frame: frame)
     }
 
     // MARK: - Input dispatch
@@ -249,10 +293,12 @@ struct KeyboardView: View {
         // Shifted symbols only when Shift is armed; CapsLock only uppercases letters.
         if modifierState.isShiftArmed, let shifted = key.shiftedCharacter {
             return Key(shifted, secondary: key.secondaryLabel, character: char,
-                       shifted: shifted, width: key.width, type: key.type)
+                       shifted: shifted, width: key.width, type: key.type,
+                       accents: key.accentVariants)
         }
         let display = isUpperCase ? char.uppercased() : char.lowercased()
         return Key(display, secondary: key.secondaryLabel, character: char,
-                   shifted: key.shiftedCharacter, width: key.width, type: key.type)
+                   shifted: key.shiftedCharacter, width: key.width, type: key.type,
+                   accents: key.accentVariants)
     }
 }

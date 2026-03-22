@@ -6,7 +6,11 @@ struct KeyView: View {
     let keyHeight: CGFloat   // drives font scaling
     let onPress: () -> Void
 
+    /// Called with accent variants + global frame when long-press fires.
+    var onLongPress: (([String], CGRect) -> Void)? = nil
+
     @State private var isPressed = false
+    @State private var globalFrame: CGRect = .zero
 
     var body: some View {
         Button(action: {}) {
@@ -36,6 +40,21 @@ struct KeyView: View {
         .scaleEffect(isPressed ? 0.94 : 1.0)
         .shadow(color: .black.opacity(0.4), radius: isPressed ? 1 : 4, x: 0, y: isPressed ? 0 : 2)
         .animation(.spring(response: 0.08, dampingFraction: 0.7), value: isPressed)
+        .background(
+            GeometryReader { geo in
+                Color.clear
+                    .onAppear { globalFrame = geo.frame(in: .global) }
+                    .onChange(of: geo.size) { _, _ in globalFrame = geo.frame(in: .global) }
+            }
+        )
+        .simultaneousGesture(
+            LongPressGesture(minimumDuration: 0.4)
+                .onEnded { _ in
+                    guard !key.accentVariants.isEmpty else { return }
+                    HapticEngine.shared.modifierArmed()
+                    onLongPress?(key.accentVariants, globalFrame)
+                }
+        )
     }
 
     // MARK: - Computed appearance

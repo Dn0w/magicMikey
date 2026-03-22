@@ -11,6 +11,8 @@ struct Key: Identifiable {
     /// Relative width multiplier (1.0 = standard key).
     let width: CGFloat
     let type: KeyType
+    /// Accent/variant characters shown on long press (e.g. ["à","á","â"] for "a").
+    var accentVariants: [String]
 
     enum KeyType {
         case character
@@ -25,12 +27,14 @@ struct Key: Identifiable {
          character: String? = nil,
          shifted: String? = nil,
          width: CGFloat = 1.0,
-         type: KeyType = .character) {
+         type: KeyType = .character,
+         accents: [String] = []) {
         self.label = label
         self.secondaryLabel = secondary
         self.character = character ?? (label.count == 1 ? label.lowercased() : nil)
         self.shiftedCharacter = shifted
         self.width = width
         self.type = type
+        self.accentVariants = accents
     }
 }

@@ -8,6 +8,7 @@ import SwiftData
 class KeyboardViewController: UIInputViewController {
 
     private let router = InputRouter()
+    private var heightConstraint: NSLayoutConstraint?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,6 +51,28 @@ class KeyboardViewController: UIInputViewController {
             hostVC.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         hostVC.didMove(toParent: self)
+
+        // Explicit height constraint — more reliable than preferredContentSize alone
+        let hc = NSLayoutConstraint(item: view!, attribute: .height,
+                                    relatedBy: .equal,
+                                    toItem: nil, attribute: .notAnAttribute,
+                                    multiplier: 1, constant: keyboardHeight())
+        hc.priority = UILayoutPriority(999)
+        view.addConstraint(hc)
+        heightConstraint = hc
+    }
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let h = keyboardHeight()
+        heightConstraint?.constant = h
+        preferredContentSize = CGSize(width: 0, height: h)
+    }
+
+    private func keyboardHeight() -> CGFloat {
+        let screen = UIScreen.main.bounds.size
+        let isPortrait = screen.height > screen.width
+        return isPortrait ? screen.height * 0.35 : screen.height * 0.45
     }
 
     // MARK: - Command routing

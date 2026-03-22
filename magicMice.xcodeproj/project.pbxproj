@@ -18,6 +18,7 @@
 		4562BA3AA211A817A6102F9E /* FunctionRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D76280482AE3DB3722CE17F /* FunctionRowView.swift */; };
 		4B09ADD3F30DF1F16503BE1B /* LayoutPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F025966E90502F778B59801 /* LayoutPickerView.swift */; };
 		4F947560BEE3CA29ADD6FAB4 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D35F439627104E6C734FFBA /* KeyboardViewController.swift */; };
+		4FFFD364FE6E995CD39DF544 /* AccentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFDB5EC44B49DAF7DB1A08B /* AccentPopupView.swift */; };
 		54EE3E405CBBD49B1BF8433B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C06F70B676CDC995729276 /* Assets.xcassets */; };
 		5A5F077E1AE1A320BF9CDC9F /* KeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6616BF0290E347F72E3D8A38 /* KeyView.swift */; };
 		6D0B313CB0EC5CA45B4E4D65 /* MacroEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EF9F944F064F9FAC6D6202 /* MacroEditSheet.swift */; };
@@ -41,6 +42,7 @@
 		BADB3BA6FB00C6F433AFEB94 /* MacroEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EF9F944F064F9FAC6D6202 /* MacroEditSheet.swift */; };
 		C776079B349D9E95BDE35EF2 /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD8766D781E484291356D4F4 /* PluginManager.swift */; };
 		DA240F4F84B4C9BDD651087D /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF77916E712BCE271B8D6A5 /* SettingsView.swift */; };
+		DB9F7FCAB00ECB338E3E251D /* AccentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFDB5EC44B49DAF7DB1A08B /* AccentPopupView.swift */; };
 		E08E5761A7432C1B2501EE7F /* KeyboardLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 070BA763E7B9F259D0542323 /* KeyboardLayout.swift */; };
 		E4B892ECEC7E1C9FCB4890A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C06F70B676CDC995729276 /* Assets.xcassets */; };
 		E5D1633225FA50129A6532E9 /* LayoutMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03E351313244DD5556E0181F /* LayoutMode.swift */; };
@@ -120,6 +122,7 @@
 		BF040D7EA6183EF46F1E641A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C02EC4C79DA646C288B668AD /* MacroSlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacroSlot.swift; sourceTree = "<group>"; };
 		CD8766D781E484291356D4F4 /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
+		DDFDB5EC44B49DAF7DB1A08B /* AccentPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccentPopupView.swift; sourceTree = "<group>"; };
 		E4356F1BC86029A3D2655AB6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F8777B72BBC6295C7DB9A44F /* Key.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Key.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,6 +202,7 @@
 		7FE84B8D2553FA24C7107C36 /* Keyboard */ = {
 			isa = PBXGroup;
 			children = (
+				DDFDB5EC44B49DAF7DB1A08B /* AccentPopupView.swift */,
 				6D76280482AE3DB3722CE17F /* FunctionRowView.swift */,
 				070BA763E7B9F259D0542323 /* KeyboardLayout.swift */,
 				4EBF0D11F62B861F9259AF1F /* KeyboardView.swift */,
@@ -402,6 +406,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FFFD364FE6E995CD39DF544 /* AccentPopupView.swift in Sources */,
 				34819385601348CBC1695A87 /* ExtensionKeyboardView.swift in Sources */,
 				3F38DD94EB4EFA7D608E2FDB /* FunctionRowView.swift in Sources */,
 				AC97452FFD21288F792BCF57 /* HapticEngine.swift in Sources */,
@@ -425,6 +430,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB9F7FCAB00ECB338E3E251D /* AccentPopupView.swift in Sources */,
 				9F193BFA79C83F0D743852F9 /* AppDelegate.swift in Sources */,
 				EE4A83B5FDC076AE473597AD /* DisplayMonitor.swift in Sources */,
 				4562BA3AA211A817A6102F9E /* FunctionRowView.swift in Sources */,
