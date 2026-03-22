@@ -69,8 +69,10 @@ targets:
       - path: magicMice/Core/InputEngine/ModifierState.swift
       - path: magicMice/Core/InputEngine/HapticEngine.swift
       - path: magicMice/Core/InputEngine/InputRouter.swift
+      - path: magicMice/Core/IME
       - path: magicMice/Core/MacroStore.swift
       - path: magicMice/Resources/Assets.xcassets
+      - path: magicMice/Resources/pinyin.db
       - path: KeyboardExtension
     info:
       path: KeyboardExtension/Info.plist

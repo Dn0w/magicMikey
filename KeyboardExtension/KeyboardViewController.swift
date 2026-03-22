@@ -82,12 +82,25 @@ class KeyboardViewController: UIInputViewController {
         return isPortrait ? screen.height * 0.35 : screen.height * 0.45
     }
 
-    /// Push the current text context to InputRouter so PredictionBarView can update.
+    /// Push the current text context to InputRouter so the smart bar can update.
     private func syncContext() {
         // documentContextBeforeInput updates asynchronously after text changes.
         DispatchQueue.main.async { [weak self] in
-            self?.router.currentContext = self?.textDocumentProxy.documentContextBeforeInput ?? ""
+            guard let self else { return }
+            let context = self.textDocumentProxy.documentContextBeforeInput ?? ""
+            self.router.currentContext = context
+            self.router.wordFragment = Self.extractWordFragment(from: context)
         }
+    }
+
+    /// Extracts the last continuous run of letters before the cursor.
+    private static func extractWordFragment(from context: String) -> String {
+        var fragment = ""
+        for c in context.reversed() {
+            if c.isLetter { fragment = String(c) + fragment }
+            else { break }
+        }
+        return fragment
     }
 
     // MARK: - Command routing

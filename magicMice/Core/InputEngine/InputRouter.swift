@@ -13,6 +13,14 @@ final class InputRouter: ObservableObject {
     /// Empty in the main app (no text proxy access).
     @Published var currentContext: String = ""
 
+    /// Last continuous letter run immediately before the cursor.
+    /// Used for English word-completion predictions. Empty in the main app.
+    @Published var wordFragment: String = ""
+
+    /// Accumulates typed Pinyin letters when a Chinese IME variant is active.
+    /// Empty when not in Chinese IME mode or after committing a candidate.
+    @Published var pinyinBuffer: String = ""
+
     /// Maps a MacroSlot's HID keyCode + modifiers and fires sendCommand.
     func sendMacro(keyCode: Int, modifiers: Int) {
         guard let char = Self.letterForHIDCode(keyCode) else { return }

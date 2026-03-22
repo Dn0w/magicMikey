@@ -5,16 +5,13 @@ import SwiftUI
 struct ExtensionKeyboardView: View {
     @EnvironmentObject var router: InputRouter
     @StateObject private var modifierState = ModifierState()
-    @AppStorage("keyboardVariant")    private var keyboardVariantRaw  = KeyboardVariant.qwerty.rawValue
-    @AppStorage("predictionLanguage") private var predictionLanguage = "en_US"
+    @AppStorage("inputMethod") private var inputMethodId = "qwerty"
     @State private var showFKeys    = false
     @State private var showSettings = false
 
     private var keyboardVariant: KeyboardVariant {
-        KeyboardVariant(rawValue: keyboardVariantRaw) ?? .qwerty
+        InputMethodProfile.profile(for: inputMethodId).keyboardVariant
     }
-
-    private let predictionBarHeight: CGFloat = 36
 
     var body: some View {
         GeometryReader { geo in
@@ -27,10 +24,6 @@ struct ExtensionKeyboardView: View {
                              onSettings: { showSettings = true })
                     .padding(.horizontal, 8)
                     .padding(.top, 6)
-                    .padding(.bottom, 2)
-
-                PredictionBarView(language: predictionLanguage)
-                    .frame(height: predictionBarHeight)
 
                 KeyboardView(modifierState: modifierState,
                              keyboardVariant: keyboardVariant,
@@ -46,9 +39,9 @@ struct ExtensionKeyboardView: View {
     }
 
     private func computeKeyHeight(totalHeight: CGFloat) -> CGFloat {
-        let rowGaps: CGFloat    = 4 * 5
-        let vertPadding: CGFloat = 6 + 2 + 8
-        let available = totalHeight - predictionBarHeight - rowGaps - vertPadding
+        let rowGaps: CGFloat     = 4 * 5
+        let vertPadding: CGFloat = 6 + 8   // top 6 + keyboard bottom 8
+        let available = totalHeight - rowGaps - vertPadding
         return max(32, floor(available / 6))
     }
 }

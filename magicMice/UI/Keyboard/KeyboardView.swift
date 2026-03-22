@@ -8,6 +8,8 @@ struct KeyboardView: View {
     var onKey: (Key) -> Void = { _ in }
     @Binding var showFKeys: Bool
 
+    @AppStorage("inputMethod") private var inputMethodId = "qwerty"
+
     @State private var isFunctionRowExpanded = false
     @State private var isUpperCase = false
     @State private var accentPopup: (variants: [String], frame: CGRect)? = nil
@@ -16,6 +18,9 @@ struct KeyboardView: View {
     private let gap:  CGFloat = 5
 
     private var layout: KeyboardLayout { KeyboardLayout(variant: keyboardVariant) }
+    private var activeMethod: InputMethodProfile { .profile(for: inputMethodId) }
+    private var isChineseIME: Bool        { activeMethod.isChineseIME }
+    private var isTraditionalChinese: Bool { activeMethod.isTraditional }
 
     var body: some View {
         GeometryReader { geo in
@@ -85,10 +90,7 @@ struct KeyboardView: View {
                     .frame(width: kw, height: keyHeight)
             }
             KeyView(key: Key("⌫", type: .action), isArmed: false, keyHeight: keyHeight,
-                    onPress: {
-                HapticEngine.shared.keyTap()
-                router.deleteBackward()
-            })
+                    onPress: { handleDelete() })
             .frame(width: max(kw, deleteW), height: keyHeight)
         }
     }
@@ -254,6 +256,29 @@ struct KeyboardView: View {
 
     // MARK: - Input dispatch
 
+    private func handleDelete() {
+        HapticEngine.shared.keyTap()
+        if isChineseIME && !router.pinyinBuffer.isEmpty {
+            router.pinyinBuffer.removeLast()
+        } else {
+            router.deleteBackward()
+        }
+    }
+
+    private func commitPinyin() {
+        let buf = router.pinyinBuffer
+        guard !buf.isEmpty else { return }
+        // If buffer spans 2+ syllables use the assembled sentence; else top single candidate
+        let text: String
+        if let sentence = PinyinEngine.assembledSentence(for: buf, traditional: isTraditionalChinese) {
+            text = sentence
+        } else {
+            text = PinyinEngine.candidates(for: buf, traditional: isTraditionalChinese).first ?? buf
+        }
+        router.insertText(text)
+        router.pinyinBuffer = ""
+    }
+
     private func handleKey(_ key: Key) {
         HapticEngine.shared.keyTap()
         guard let char = key.character else { return }
@@ -265,6 +290,32 @@ struct KeyboardView: View {
             modifierState.consumeAfterKeypress()
             onKey(key)
             return
+        }
+
+        // Chinese IME: intercept letter keys and special actions.
+        if isChineseIME && modifierState.activeModifiers.isEmpty {
+            if char.first?.isLetter == true {
+                router.pinyinBuffer.append(char.lowercased())
+                onKey(key)
+                return
+            }
+            if char == " " && !router.pinyinBuffer.isEmpty {
+                // Space commits the top candidate.
+                commitPinyin()
+                modifierState.consumeAfterKeypress()
+                onKey(key)
+                return
+            }
+            if char == "\n" && !router.pinyinBuffer.isEmpty {
+                // Return inserts raw Pinyin and clears.
+                router.insertText(router.pinyinBuffer)
+                router.pinyinBuffer = ""
+                modifierState.consumeAfterKeypress()
+                onKey(key)
+                return
+            }
+            // Any other key: clear pending buffer, then fall through to normal insert.
+            if !router.pinyinBuffer.isEmpty { router.pinyinBuffer = "" }
         }
 
         // Shifted symbols only when Shift is armed; CapsLock only uppercases letters.

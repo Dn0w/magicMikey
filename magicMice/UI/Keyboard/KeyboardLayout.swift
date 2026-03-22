@@ -8,6 +8,7 @@ enum KeyboardVariant: String, CaseIterable, Identifiable {
     case russian = "Russian"
 
     var id: String { rawValue }
+
 }
 
 struct KeyboardLayout {

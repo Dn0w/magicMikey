@@ -8,14 +8,14 @@ struct RootView: View {
     @StateObject private var displayMonitor = DisplayMonitor.shared
 
     @AppStorage("trackpadVisible")   private var trackpadVisible: Bool = true
-    @AppStorage("keyboardVariant")   private var keyboardVariantRaw: String = KeyboardVariant.qwerty.rawValue
+    @AppStorage("inputMethod")       private var inputMethodId: String = "qwerty"
     @AppStorage("scrollSensitivity") private var scrollSensitivity: Double = 3.0
     @AppStorage("naturalScrolling")  private var naturalScrolling: Bool = true
     @State private var showSettings = false
     @State private var showFKeys = false
 
     private var keyboardVariant: KeyboardVariant {
-        KeyboardVariant(rawValue: keyboardVariantRaw) ?? .qwerty
+        InputMethodProfile.profile(for: inputMethodId).keyboardVariant
     }
 
     var body: some View {
@@ -60,7 +60,6 @@ struct RootView: View {
                          onSettings: { showSettings = true })
                 .padding(.horizontal, 8)
                 .padding(.top, 6)
-                .padding(.bottom, 2)
 
             KeyboardView(modifierState: modifierState,
                          keyboardVariant: keyboardVariant,
@@ -93,8 +92,8 @@ struct RootView: View {
 
     /// Distributes the top half across 6 equal rows: smart bar + 5 keyboard rows.
     private func computeKeyHeight(totalHalf: CGFloat) -> CGFloat {
-        let rowGaps: CGFloat = 4 * 5
-        let vertPadding: CGFloat = 6 + 2 + 8
+        let rowGaps: CGFloat     = 4 * 5
+        let vertPadding: CGFloat = 6 + 8   // top 6 + keyboard bottom 8
         let available = totalHalf - rowGaps - vertPadding
         return max(36, floor(available / 6))
     }
