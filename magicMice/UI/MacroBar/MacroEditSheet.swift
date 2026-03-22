@@ -3,8 +3,8 @@ import SwiftData
 
 struct MacroEditSheet: View {
     @Bindable var slot: MacroSlot
+    var onDelete: () -> Void = {}
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.modelContext) private var context
     @State private var showDeleteConfirm = false
 
     var body: some View {
@@ -28,8 +28,8 @@ struct MacroEditSheet: View {
             }
             .confirmationDialog("Delete this macro?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
                 Button("Delete", role: .destructive) {
-                    context.delete(slot)
                     dismiss()
+                    onDelete()
                 }
                 Button("Cancel", role: .cancel) {}
             }
