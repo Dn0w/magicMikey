@@ -9,6 +9,10 @@ final class InputRouter: ObservableObject {
     var sendCommand: (String, UIKeyModifierFlags) -> Void = { _, _ in }
     var dismissKeyboard: () -> Void = {}
 
+    /// Updated by the keyboard extension after every text operation.
+    /// Empty in the main app (no text proxy access).
+    @Published var currentContext: String = ""
+
     /// Maps a MacroSlot's HID keyCode + modifiers and fires sendCommand.
     func sendMacro(keyCode: Int, modifiers: Int) {
         guard let char = Self.letterForHIDCode(keyCode) else { return }

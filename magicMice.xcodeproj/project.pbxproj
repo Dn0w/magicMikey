@@ -22,6 +22,7 @@
 		54EE3E405CBBD49B1BF8433B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C06F70B676CDC995729276 /* Assets.xcassets */; };
 		5A5F077E1AE1A320BF9CDC9F /* KeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6616BF0290E347F72E3D8A38 /* KeyView.swift */; };
 		64822D546D4CB313AD86C99F /* LayoutPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F025966E90502F778B59801 /* LayoutPickerView.swift */; };
+		6CCB4C6EB1292BA36DCE9EF9 /* PredictionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56921A2242AD37A7B7227451 /* PredictionBarView.swift */; };
 		6D0B313CB0EC5CA45B4E4D65 /* MacroEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EF9F944F064F9FAC6D6202 /* MacroEditSheet.swift */; };
 		73006E6575FF1F11BEB24A20 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388785E80E97C46FA5308140 /* RootView.swift */; };
 		7384F5DAFD0B1A1261AD628B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBF0D11F62B861F9259AF1F /* KeyboardView.swift */; };
@@ -35,6 +36,7 @@
 		9475D1123A3AC74AADC36A4B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF77916E712BCE271B8D6A5 /* SettingsView.swift */; };
 		976DD49013295239CFE4A44A /* GestureZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F448D8529BEAB8EACDF5A4 /* GestureZoneView.swift */; };
 		9F193BFA79C83F0D743852F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4356F1BC86029A3D2655AB6 /* AppDelegate.swift */; };
+		A02E5BD96A8C7914BF5CDFC1 /* PredictionBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56921A2242AD37A7B7227451 /* PredictionBarView.swift */; };
 		A875D2D34455BC074B9D76E0 /* ModifierState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557FB6D27AD3F10EF14B3D6 /* ModifierState.swift */; };
 		ABA5B3D52F9DE33DD56A7C96 /* KeyDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01AC63F9E5D79E77A315C58F /* KeyDispatcher.swift */; };
 		AC0B4A22C0D205EFA5C4C016 /* InputRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2747F1B7D575DFCA0A4FC34 /* InputRouter.swift */; };
@@ -105,6 +107,7 @@
 		43C06F70B676CDC995729276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4B04399A10C872645284FB31 /* magicMiceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = magicMiceApp.swift; sourceTree = "<group>"; };
 		4EBF0D11F62B861F9259AF1F /* KeyboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardView.swift; sourceTree = "<group>"; };
+		56921A2242AD37A7B7227451 /* PredictionBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionBarView.swift; sourceTree = "<group>"; };
 		639F2D8F08817C003CE81068 /* HapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngine.swift; sourceTree = "<group>"; };
 		6616BF0290E347F72E3D8A38 /* KeyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyView.swift; sourceTree = "<group>"; };
 		6674F14C317AD8BF73D9E055 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -209,6 +212,7 @@
 				070BA763E7B9F259D0542323 /* KeyboardLayout.swift */,
 				4EBF0D11F62B861F9259AF1F /* KeyboardView.swift */,
 				6616BF0290E347F72E3D8A38 /* KeyView.swift */,
+				56921A2242AD37A7B7227451 /* PredictionBarView.swift */,
 			);
 			path = Keyboard;
 			sourceTree = "<group>";
@@ -426,6 +430,7 @@
 				40E33189E5AF1AA49B4078F3 /* MacroSlotView.swift in Sources */,
 				10C6EDE44F5434EB1E5082FD /* MacroStore.swift in Sources */,
 				A875D2D34455BC074B9D76E0 /* ModifierState.swift in Sources */,
+				6CCB4C6EB1292BA36DCE9EF9 /* PredictionBarView.swift in Sources */,
 				9475D1123A3AC74AADC36A4B /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +462,7 @@
 				78FF37811CEC2674309CA165 /* MacroStore.swift in Sources */,
 				04C563DD18B83FD42D1A2148 /* ModifierState.swift in Sources */,
 				C776079B349D9E95BDE35EF2 /* PluginManager.swift in Sources */,
+				A02E5BD96A8C7914BF5CDFC1 /* PredictionBarView.swift in Sources */,
 				73006E6575FF1F11BEB24A20 /* RootView.swift in Sources */,
 				DA240F4F84B4C9BDD651087D /* SettingsView.swift in Sources */,
 				F19CDCEDAA6C345F4E065DA1 /* magicMiceApp.swift in Sources */,

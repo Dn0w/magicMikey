@@ -18,9 +18,11 @@ class KeyboardViewController: UIInputViewController {
         // Wire InputRouter → textDocumentProxy (the system keyboard bridge)
         router.insertText = { [weak self] text in
             self?.textDocumentProxy.insertText(text)
+            self?.syncContext()
         }
         router.deleteBackward = { [weak self] in
             self?.textDocumentProxy.deleteBackward()
+            self?.syncContext()
         }
         router.sendCommand = { [weak self] input, modifiers in
             self?.handleCommand(input: input, modifiers: modifiers)
@@ -78,6 +80,14 @@ class KeyboardViewController: UIInputViewController {
         let screen = UIScreen.main.bounds.size
         let isPortrait = screen.height > screen.width
         return isPortrait ? screen.height * 0.35 : screen.height * 0.45
+    }
+
+    /// Push the current text context to InputRouter so PredictionBarView can update.
+    private func syncContext() {
+        // documentContextBeforeInput updates asynchronously after text changes.
+        DispatchQueue.main.async { [weak self] in
+            self?.router.currentContext = self?.textDocumentProxy.documentContextBeforeInput ?? ""
+        }
     }
 
     // MARK: - Command routing
