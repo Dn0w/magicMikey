@@ -59,7 +59,7 @@ struct RootView: View {
         let kh = computeKeyHeight(totalHalf: halfH)
 
         VStack(spacing: 0) {
-            MacroBarView(showFKeys: $showFKeys, rowHeight: kh)
+            MacroBarView(showFKeys: $showFKeys, rowHeight: kh, onSettings: { showSettings = true })
                 .padding(.horizontal, 8)
                 .padding(.top, 6)
                 .padding(.bottom, 2)
@@ -67,7 +67,6 @@ struct RootView: View {
             KeyboardView(modifierState: modifierState,
                          keyboardVariant: keyboardVariant,
                          keyHeight: kh,
-                         onSettings: { showSettings = true },
                          showFKeys: $showFKeys)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -106,23 +105,10 @@ struct RootView: View {
     // MARK: - Floating controls
 
     private func floatingControls(keyHeight: CGFloat) -> some View {
-        let btnH = keyHeight - 12   // matches row's .padding(.vertical, 6) inside smart bar
-        return HStack(spacing: 10) {
-            trackpadToggle(keyHeight: btnH)
-
-            Button { showSettings = true } label: {
-                Image(systemName: "gearshape")
-                    .font(.system(size: 14))
-                    .foregroundColor(Color(hex: "#888899"))
-                    .frame(width: btnH, height: btnH)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
-                    )
-            }
-        }
-        .padding(.top, 12)   // 6pt outer (topHalf) + 6pt inner (row padding)
-        .padding(.trailing, 8)
+        let btnH = keyHeight - 12
+        return trackpadToggle(keyHeight: btnH)
+            .padding(.top, 12)
+            .padding(.trailing, 8)
     }
 
     // MARK: - No display banner

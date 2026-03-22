@@ -17,14 +17,13 @@ struct ExtensionKeyboardView: View {
         GeometryReader { geo in
             let kh = computeKeyHeight(totalHeight: geo.size.height)
             VStack(spacing: 0) {
-                MacroBarView(showFKeys: $showFKeys, rowHeight: kh)
+                MacroBarView(showFKeys: $showFKeys, rowHeight: kh, onSettings: { showSettings = true })
                     .padding(.horizontal, 8)
                     .padding(.top, 6)
                     .padding(.bottom, 2)
                 KeyboardView(modifierState: modifierState,
                              keyboardVariant: keyboardVariant,
                              keyHeight: kh,
-                             onSettings: { showSettings = true },
                              showFKeys: $showFKeys)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }

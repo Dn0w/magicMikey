@@ -5,6 +5,7 @@ struct MacroBarView: View {
     @EnvironmentObject var router: InputRouter
     @Binding var showFKeys: Bool
     var rowHeight: CGFloat = 60
+    var onSettings: (() -> Void)? = nil
     @Query(sort: \MacroSlot.sortOrder) var slots: [MacroSlot]
     @Environment(\.modelContext) private var context
     @State private var editingSlot: MacroSlot?
@@ -16,14 +17,31 @@ struct MacroBarView: View {
         "\u{F70C}", "\u{F70D}", "\u{F70E}", "\u{F70F}"
     ]
 
+    private var btnH: CGFloat { rowHeight - 12 }
+
     var body: some View {
-        Group {
-            if showFKeys {
-                fKeyRow
-                    .transition(.opacity)
-            } else {
-                macroRow
-                    .transition(.opacity)
+        HStack(spacing: 8) {
+            Group {
+                if showFKeys {
+                    fKeyRow.transition(.opacity)
+                } else {
+                    macroRow.transition(.opacity)
+                }
+            }
+            .frame(maxWidth: .infinity)
+
+            if let onSettings {
+                Button { onSettings() } label: {
+                    Image(systemName: "gearshape")
+                        .font(.system(size: 14))
+                        .foregroundColor(Color(hex: "#888899"))
+                        .frame(width: btnH, height: btnH)
+                        .background(
+                            RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
+                                .overlay(RoundedRectangle(cornerRadius: 8)
+                                    .stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                        )
+                }
             }
         }
         .frame(height: rowHeight)
@@ -57,7 +75,6 @@ struct MacroBarView: View {
             }
         }
         .padding(.vertical, 6)
-        .padding(.trailing, 82)
     }
 
     // MARK: - Macro row
