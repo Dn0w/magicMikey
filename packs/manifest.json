@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "packs": [
+    {
+      "id": "rime-luna-pinyin",
+      "label": "Pinyin — Simplified Chinese",
+      "engine": "rime",
+      "sizeBytes": 8388608,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-luna-pinyin.zip",
+      "inputMethodIds": ["pinyin-simp"]
+    },
+    {
+      "id": "rime-luna-pinyin-tw",
+      "label": "Pinyin — Traditional Chinese",
+      "engine": "rime",
+      "sizeBytes": 8388608,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-luna-pinyin-tw.zip",
+      "inputMethodIds": ["pinyin-trad"]
+    },
+    {
+      "id": "rime-bopomofo",
+      "label": "Bopomofo / Zhuyin (注音)",
+      "engine": "rime",
+      "sizeBytes": 2097152,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-bopomofo.zip",
+      "inputMethodIds": ["bopomofo"]
+    },
+    {
+      "id": "rime-cangjie",
+      "label": "Cangjie 5 (倉頡)",
+      "engine": "rime",
+      "sizeBytes": 3145728,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-cangjie.zip",
+      "inputMethodIds": ["cangjie"]
+    },
+    {
+      "id": "rime-wubi",
+      "label": "Wubi 86 (五笔)",
+      "engine": "rime",
+      "sizeBytes": 4194304,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-wubi.zip",
+      "inputMethodIds": ["wubi"]
+    },
+    {
+      "id": "rime-jyutping",
+      "label": "Cantonese — Jyutping (粵語)",
+      "engine": "rime",
+      "sizeBytes": 5242880,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-jyutping.zip",
+      "inputMethodIds": ["jyutping"]
+    },
+    {
+      "id": "ime-arabic",
+      "label": "Arabic (عربي)",
+      "engine": "ime",
+      "sizeBytes": 12288,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-arabic.zip",
+      "inputMethodIds": ["ime-arabic"]
+    },
+    {
+      "id": "ime-hindi",
+      "label": "Hindi (हिन्दी)",
+      "engine": "ime",
+      "sizeBytes": 10240,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-hindi.zip",
+      "inputMethodIds": ["ime-hindi"]
+    },
+    {
+      "id": "ime-greek",
+      "label": "Greek (Ελληνικά)",
+      "engine": "ime",
+      "sizeBytes": 8192,
+      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-greek.zip",
+      "inputMethodIds": ["ime-greek"]
+    }
+  ]
+}
