@@ -12,7 +12,6 @@ struct MacroBarView: View {
     @Query(sort: \MacroSlot.sortOrder) var slots: [MacroSlot]
     @Environment(\.modelContext) private var context
     @State private var editingSlot: MacroSlot?
-    @State private var pendingDelete: MacroSlot?
 
     // F1–F12 use Unicode private-use characters (same encoding as macOS NSEvent / UIKit)
     private let fKeyInputs: [String] = [
@@ -63,15 +62,19 @@ struct MacroBarView: View {
             }
         }
         .frame(height: rowHeight)
-        .sheet(item: $editingSlot, onDismiss: {
-            if let slot = pendingDelete {
-                context.delete(slot)
-                pendingDelete = nil
-            }
-        }) { slot in
-            MacroEditSheet(slot: slot, onDelete: {
-                pendingDelete = slot
-            })
+        .sheet(item: $editingSlot) { slot in
+            MacroEditSheet(
+                slot: slot,
+                onSave: { label, keyCode, modifiers in
+                    slot.label     = label
+                    slot.keyCode   = keyCode
+                    slot.modifiers = modifiers
+                },
+                onDelete: {
+                    // Defer deletion to next run loop so sheet is fully gone first
+                    DispatchQueue.main.async { context.delete(slot) }
+                }
+            )
             .presentationDetents([.medium])
         }
         .onAppear {

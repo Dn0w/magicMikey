@@ -2,10 +2,25 @@ import SwiftUI
 import SwiftData
 
 struct MacroEditSheet: View {
-    @Bindable var slot: MacroSlot
+    // Local copies — no @Bindable, no SwiftData reference held in this view
+    @State private var label: String
+    @State private var keyCode: Int
+    @State private var modifiers: Int
+
+    var onSave: (String, Int, Int) -> Void = { _, _, _ in }
     var onDelete: () -> Void = {}
+
     @Environment(\.dismiss) private var dismiss
-    @State private var showDeleteConfirm = false
+
+    init(slot: MacroSlot,
+         onSave: @escaping (String, Int, Int) -> Void = { _, _, _ in },
+         onDelete: @escaping () -> Void = {}) {
+        _label     = State(initialValue: slot.label)
+        _keyCode   = State(initialValue: slot.keyCode)
+        _modifiers = State(initialValue: slot.modifiers)
+        self.onSave   = onSave
+        self.onDelete = onDelete
+    }
 
     var body: some View {
         NavigationStack {
@@ -22,16 +37,12 @@ struct MacroEditSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Done") { dismiss() }
-                        .foregroundColor(Color(hex: "#4A9EFF"))
+                    Button("Done") {
+                        onSave(label, keyCode, modifiers)
+                        dismiss()
+                    }
+                    .foregroundColor(Color(hex: "#4A9EFF"))
                 }
-            }
-            .confirmationDialog("Delete this macro?", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
-                Button("Delete", role: .destructive) {
-                    dismiss()
-                    onDelete()
-                }
-                Button("Cancel", role: .cancel) {}
             }
         }
     }
@@ -41,7 +52,7 @@ struct MacroEditSheet: View {
     private var labelSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             sectionHeader("LABEL")
-            TextField("Label", text: $slot.label)
+            TextField("Label", text: $label)
                 .font(.system(.body, design: .monospaced))
                 .foregroundColor(Color(hex: "#E8E8F0"))
                 .padding(.horizontal, 12)
@@ -56,7 +67,6 @@ struct MacroEditSheet: View {
         VStack(alignment: .leading, spacing: 12) {
             sectionHeader("SHORTCUT")
 
-            // Combo preview
             HStack {
                 Text(currentComboLabel)
                     .font(.system(size: 20, weight: .semibold, design: .monospaced))
@@ -70,40 +80,36 @@ struct MacroEditSheet: View {
             .padding(.vertical, 12)
             .background(fieldBackground)
 
-            // Modifier buttons
             HStack(spacing: 8) {
-                modifierButton("⌘", label: "Cmd",  flag: .command)
+                modifierButton("⌘", label: "Cmd",   flag: .command)
                 modifierButton("⇧", label: "Shift", flag: .shift)
-                modifierButton("⌥", label: "Opt",  flag: .alternate)
-                modifierButton("⌃", label: "Ctrl", flag: .control)
+                modifierButton("⌥", label: "Opt",   flag: .alternate)
+                modifierButton("⌃", label: "Ctrl",  flag: .control)
             }
 
-            // Key grid
             keyGrid
         }
     }
 
     private var currentComboLabel: String {
         var parts: [String] = []
-        if slot.modifiers & UIKeyModifierFlags.control.rawValue   != 0 { parts.append("⌃") }
-        if slot.modifiers & UIKeyModifierFlags.alternate.rawValue != 0 { parts.append("⌥") }
-        if slot.modifiers & UIKeyModifierFlags.shift.rawValue     != 0 { parts.append("⇧") }
-        if slot.modifiers & UIKeyModifierFlags.command.rawValue   != 0 { parts.append("⌘") }
-        parts.append(keyName(for: slot.keyCode))
+        if modifiers & UIKeyModifierFlags.control.rawValue   != 0 { parts.append("⌃") }
+        if modifiers & UIKeyModifierFlags.alternate.rawValue != 0 { parts.append("⌥") }
+        if modifiers & UIKeyModifierFlags.shift.rawValue     != 0 { parts.append("⇧") }
+        if modifiers & UIKeyModifierFlags.command.rawValue   != 0 { parts.append("⌘") }
+        parts.append(keyName(for: keyCode))
         return parts.joined()
     }
 
     private func modifierButton(_ symbol: String, label: String, flag: UIKeyModifierFlags) -> some View {
-        let active = (slot.modifiers & flag.rawValue) != 0
+        let active = (modifiers & flag.rawValue) != 0
         return Button {
-            if active { slot.modifiers &= ~flag.rawValue }
-            else      { slot.modifiers |=  flag.rawValue }
+            if active { modifiers &= ~flag.rawValue }
+            else      { modifiers |=  flag.rawValue }
         } label: {
             VStack(spacing: 2) {
-                Text(symbol)
-                    .font(.system(size: 18, weight: .semibold, design: .monospaced))
-                Text(label)
-                    .font(.system(size: 9, design: .monospaced))
+                Text(symbol).font(.system(size: 18, weight: .semibold, design: .monospaced))
+                Text(label) .font(.system(size: 9,  design: .monospaced))
             }
             .foregroundColor(active ? Color(hex: "#0A0A0F") : Color(hex: "#E8E8F0"))
             .frame(maxWidth: .infinity)
@@ -119,11 +125,7 @@ struct MacroEditSheet: View {
 
     // MARK: - Key grid
 
-    private struct KeyEntry {
-        let label: String
-        let code: Int
-        var isWide: Bool = false
-    }
+    private struct KeyEntry { let label: String; let code: Int; var isWide: Bool = false }
 
     private static let keyRows: [[KeyEntry]] = [
         [ .init(label:"Q",code:20), .init(label:"W",code:26), .init(label:"E",code:8),
@@ -161,12 +163,11 @@ struct MacroEditSheet: View {
 
     @ViewBuilder
     private func keyPickerButton(_ entry: KeyEntry) -> some View {
-        let selected = slot.keyCode == entry.code
-        Button { slot.keyCode = entry.code } label: {
+        let selected = keyCode == entry.code
+        Button { keyCode = entry.code } label: {
             Text(entry.label)
                 .font(.system(size: entry.isWide ? 11 : 13, weight: .medium, design: .monospaced))
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
+                .lineLimit(1).minimumScaleFactor(0.7)
                 .foregroundColor(selected ? Color(hex: "#0A0A0F") : Color(hex: "#E8E8F0"))
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
@@ -181,9 +182,7 @@ struct MacroEditSheet: View {
 
     private func keyName(for code: Int) -> String {
         for row in Self.keyRows {
-            if let entry = row.first(where: { $0.code == code }) {
-                return entry.label
-            }
+            if let e = row.first(where: { $0.code == code }) { return e.label }
         }
         return "(\(code))"
     }
@@ -192,7 +191,8 @@ struct MacroEditSheet: View {
 
     private var deleteSection: some View {
         Button(role: .destructive) {
-            showDeleteConfirm = true
+            onDelete()
+            dismiss()
         } label: {
             Text("Delete Macro")
                 .font(.system(size: 15, weight: .semibold, design: .monospaced))
