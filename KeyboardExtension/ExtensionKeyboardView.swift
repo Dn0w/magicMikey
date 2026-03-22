@@ -7,6 +7,7 @@ struct ExtensionKeyboardView: View {
     @StateObject private var modifierState = ModifierState()
     @AppStorage("keyboardVariant") private var keyboardVariantRaw = KeyboardVariant.qwerty.rawValue
     @State private var showFKeys = false
+    @State private var showSettings = false
 
     private var keyboardVariant: KeyboardVariant {
         KeyboardVariant(rawValue: keyboardVariantRaw) ?? .qwerty
@@ -23,11 +24,15 @@ struct ExtensionKeyboardView: View {
                 KeyboardView(modifierState: modifierState,
                              keyboardVariant: keyboardVariant,
                              keyHeight: kh,
+                             onSettings: { showSettings = true },
                              showFKeys: $showFKeys)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .background(Color(hex: "#0A0A0F"))
+        .sheet(isPresented: $showSettings) {
+            SettingsView().presentationDetents([.medium, .large])
+        }
     }
 
     private func computeKeyHeight(totalHeight: CGFloat) -> CGFloat {

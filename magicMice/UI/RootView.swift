@@ -7,8 +7,10 @@ struct RootView: View {
     @StateObject private var modifierState = ModifierState()
     @StateObject private var displayMonitor = DisplayMonitor.shared
 
-    @AppStorage("trackpadVisible") private var trackpadVisible: Bool = true
-    @AppStorage("keyboardVariant") private var keyboardVariantRaw: String = KeyboardVariant.qwerty.rawValue
+    @AppStorage("trackpadVisible")   private var trackpadVisible: Bool = true
+    @AppStorage("keyboardVariant")   private var keyboardVariantRaw: String = KeyboardVariant.qwerty.rawValue
+    @AppStorage("scrollSensitivity") private var scrollSensitivity: Double = 3.0
+    @AppStorage("naturalScrolling")  private var naturalScrolling: Bool = true
     @State private var showSettings = false
     @State private var showFKeys = false
 
@@ -39,6 +41,8 @@ struct RootView: View {
         .sheet(isPresented: $showSettings) {
             SettingsView().presentationDetents([.medium, .large])
         }
+        .onChange(of: scrollSensitivity) { _, v in GestureTranslator.shared.scrollSensitivity = v }
+        .onChange(of: naturalScrolling)  { _, v in GestureTranslator.shared.naturalScrolling = v }
     }
 
     // MARK: - Split: keyboard 50% / trackpad 50%
@@ -63,6 +67,7 @@ struct RootView: View {
             KeyboardView(modifierState: modifierState,
                          keyboardVariant: keyboardVariant,
                          keyHeight: kh,
+                         onSettings: { showSettings = true },
                          showFKeys: $showFKeys)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }

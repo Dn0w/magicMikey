@@ -65,6 +65,7 @@ targets:
       - path: magicMice/UI/Keyboard
       - path: magicMice/UI/MacroBar
       - path: magicMice/Models
+      - path: magicMice/UI/Settings
       - path: magicMice/Core/InputEngine/ModifierState.swift
       - path: magicMice/Core/InputEngine/HapticEngine.swift
       - path: magicMice/Core/InputEngine/InputRouter.swift

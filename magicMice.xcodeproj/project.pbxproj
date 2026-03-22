@@ -21,6 +21,7 @@
 		4FFFD364FE6E995CD39DF544 /* AccentPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDFDB5EC44B49DAF7DB1A08B /* AccentPopupView.swift */; };
 		54EE3E405CBBD49B1BF8433B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43C06F70B676CDC995729276 /* Assets.xcassets */; };
 		5A5F077E1AE1A320BF9CDC9F /* KeyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6616BF0290E347F72E3D8A38 /* KeyView.swift */; };
+		64822D546D4CB313AD86C99F /* LayoutPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F025966E90502F778B59801 /* LayoutPickerView.swift */; };
 		6D0B313CB0EC5CA45B4E4D65 /* MacroEditSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91EF9F944F064F9FAC6D6202 /* MacroEditSheet.swift */; };
 		73006E6575FF1F11BEB24A20 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 388785E80E97C46FA5308140 /* RootView.swift */; };
 		7384F5DAFD0B1A1261AD628B /* KeyboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EBF0D11F62B861F9259AF1F /* KeyboardView.swift */; };
@@ -31,6 +32,7 @@
 		8AF239D327A5B6BB2015C142 /* magicMiceKeyboard.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 19D99317B75B2628FEED83CE /* magicMiceKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		8CF3A249A94C9A8DCF2C2C4A /* magicMiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0CC237745405B2B2976D7A /* magicMiceTests.swift */; };
 		8E747C886904070218262CCF /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 639F2D8F08817C003CE81068 /* HapticEngine.swift */; };
+		9475D1123A3AC74AADC36A4B /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EF77916E712BCE271B8D6A5 /* SettingsView.swift */; };
 		976DD49013295239CFE4A44A /* GestureZoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75F448D8529BEAB8EACDF5A4 /* GestureZoneView.swift */; };
 		9F193BFA79C83F0D743852F9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4356F1BC86029A3D2655AB6 /* AppDelegate.swift */; };
 		A875D2D34455BC074B9D76E0 /* ModifierState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7557FB6D27AD3F10EF14B3D6 /* ModifierState.swift */; };
@@ -417,12 +419,14 @@
 				7384F5DAFD0B1A1261AD628B /* KeyboardView.swift in Sources */,
 				4F947560BEE3CA29ADD6FAB4 /* KeyboardViewController.swift in Sources */,
 				E5FC86F1807D43465F91E7DA /* LayoutMode.swift in Sources */,
+				64822D546D4CB313AD86C99F /* LayoutPickerView.swift in Sources */,
 				B88CF9E38325A3E0D57FD4AB /* MacroBarView.swift in Sources */,
 				6D0B313CB0EC5CA45B4E4D65 /* MacroEditSheet.swift in Sources */,
 				20DAE7DEFAC5545ECF208A7C /* MacroSlot.swift in Sources */,
 				40E33189E5AF1AA49B4078F3 /* MacroSlotView.swift in Sources */,
 				10C6EDE44F5434EB1E5082FD /* MacroStore.swift in Sources */,
 				A875D2D34455BC074B9D76E0 /* ModifierState.swift in Sources */,
+				9475D1123A3AC74AADC36A4B /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

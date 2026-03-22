@@ -53,8 +53,6 @@ struct SettingsView: View {
                 }
             }
             .onChange(of: hapticEnabled)      { _, v in HapticEngine.shared.isEnabled = v }
-            .onChange(of: scrollSensitivity)  { _, v in GestureTranslator.shared.scrollSensitivity = v }
-            .onChange(of: naturalScrolling)   { _, v in GestureTranslator.shared.naturalScrolling = v }
         }
     }
 }

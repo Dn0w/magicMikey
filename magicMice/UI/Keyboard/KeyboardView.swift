@@ -6,6 +6,7 @@ struct KeyboardView: View {
     var keyboardVariant: KeyboardVariant = .qwerty
     var keyHeight: CGFloat = 64
     var onKey: (Key) -> Void = { _ in }
+    var onSettings: (() -> Void)? = nil
     @Binding var showFKeys: Bool
 
     @State private var isFunctionRowExpanded = false
@@ -199,6 +200,21 @@ struct KeyboardView: View {
             .frame(width: kw, height: keyHeight)
 
             arrow("→", UIKeyCommand.inputRightArrow, kw: kw, h: keyHeight)
+
+            if let onSettings {
+                Button { onSettings() } label: {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color(hex: "#1C1C24"))
+                            .overlay(RoundedRectangle(cornerRadius: 6)
+                                .stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                        Image(systemName: "gearshape")
+                            .font(.system(size: floor(keyHeight * 0.30)))
+                            .foregroundColor(Color(hex: "#888899"))
+                    }
+                }
+                .frame(width: kw, height: keyHeight)
+            }
         }
     }
 
