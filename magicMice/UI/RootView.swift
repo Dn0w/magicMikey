@@ -18,6 +18,7 @@ struct RootView: View {
 
     var body: some View {
         GeometryReader { geo in
+            let kh = computeKeyHeight(totalHalf: keyboardHeight(geo.size.height))
             ZStack(alignment: .topTrailing) {
                 Color(hex: "#0A0A0F").ignoresSafeArea()
 
@@ -26,8 +27,8 @@ struct RootView: View {
                     bottomHalf(geo: geo)
                 }
 
-                // Floating controls pinned top-right
-                floatingControls
+                // Floating controls pinned top-right, same height as smart bar row
+                floatingControls(keyHeight: kh)
 
                 // External display warning banner
                 if !displayMonitor.isExternalDisplayConnected {
@@ -51,15 +52,17 @@ struct RootView: View {
     private func topHalf(geo: GeometryProxy) -> some View {
         let halfH = keyboardHeight(geo.size.height)
 
+        let kh = computeKeyHeight(totalHalf: halfH)
+
         VStack(spacing: 0) {
-            MacroBarView(showFKeys: $showFKeys)
+            MacroBarView(showFKeys: $showFKeys, rowHeight: kh)
                 .padding(.horizontal, 8)
                 .padding(.top, 6)
                 .padding(.bottom, 2)
 
             KeyboardView(modifierState: modifierState,
                          keyboardVariant: keyboardVariant,
-                         keyHeight: computeKeyHeight(totalHalf: halfH),
+                         keyHeight: kh,
                          showFKeys: $showFKeys)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
@@ -86,32 +89,35 @@ struct RootView: View {
 
     // MARK: - Key height calculation
 
-    /// Distributes the top half's height across 5 equal-height key rows.
+    /// Distributes the top half across 6 equal rows: smart bar + 5 keyboard rows.
     private func computeKeyHeight(totalHalf: CGFloat) -> CGFloat {
-        let macroBarHeight: CGFloat = 62
-        let rowGaps: CGFloat = 5 * 4       // 4 gaps between 5 rows
-        let vertPadding: CGFloat = 16
+        let rowGaps: CGFloat = 4 * 5       // 4 gaps between 5 keyboard rows (gap = 5pt)
+        let vertPadding: CGFloat = 6 + 2 + 8  // macro top pad + macro bottom pad + keyboard bottom pad
 
-        let available = totalHalf - macroBarHeight - rowGaps - vertPadding
-        return max(40, floor(available / 5))
+        let available = totalHalf - rowGaps - vertPadding
+        return max(36, floor(available / 6))
     }
 
     // MARK: - Floating controls
 
-    private var floatingControls: some View {
-        HStack(spacing: 10) {
-            trackpadToggle
+    private func floatingControls(keyHeight: CGFloat) -> some View {
+        let btnH = keyHeight - 12   // matches row's .padding(.vertical, 6) inside smart bar
+        return HStack(spacing: 10) {
+            trackpadToggle(keyHeight: btnH)
 
             Button { showSettings = true } label: {
                 Image(systemName: "gearshape")
                     .font(.system(size: 14))
                     .foregroundColor(Color(hex: "#888899"))
-                    .padding(9)
-                    .background(Circle().fill(Color(hex: "#1C1C24")))
+                    .frame(width: btnH, height: btnH)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                    )
             }
         }
-        .padding(.top, 10)
-        .padding(.trailing, 14)
+        .padding(.top, 12)   // 6pt outer (topHalf) + 6pt inner (row padding)
+        .padding(.trailing, 8)
     }
 
     // MARK: - No display banner
@@ -144,17 +150,16 @@ struct RootView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
     }
 
-    private var trackpadToggle: some View {
+    private func trackpadToggle(keyHeight: CGFloat) -> some View {
         Button { trackpadVisible.toggle() } label: {
             Image(systemName: trackpadVisible ? "hand.point.up.left.fill" : "hand.point.up.left")
-                .font(.system(size: 12))
+                .font(.system(size: 14))
                 .foregroundColor(trackpadVisible ? Color(hex: "#4A9EFF") : Color(hex: "#555566"))
-                .padding(.horizontal, 10)
-                .padding(.vertical, 7)
+                .frame(width: keyHeight, height: keyHeight)
+                .background(
+                    RoundedRectangle(cornerRadius: 8).fill(Color(hex: "#1C1C24"))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                )
         }
-        .background(
-            Capsule().fill(Color(hex: "#1C1C24"))
-                .overlay(Capsule().stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
-        )
     }
 }

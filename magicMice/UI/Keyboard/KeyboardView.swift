@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct KeyboardView: View {
+    @EnvironmentObject var router: InputRouter
     @ObservedObject var modifierState: ModifierState
     var keyboardVariant: KeyboardVariant = .qwerty
     var keyHeight: CGFloat = 64
@@ -54,7 +55,7 @@ struct KeyboardView: View {
             }
             KeyView(key: Key("⌫", type: .action), isArmed: false, keyHeight: keyHeight) {
                 HapticEngine.shared.keyTap()
-                KeyDispatcher.shared.deleteBackward()
+                router.deleteBackward()
             }
             .frame(width: max(kw, deleteW), height: keyHeight)
         }
@@ -189,8 +190,7 @@ struct KeyboardView: View {
     private func arrow(_ label: String, _ input: String, kw: CGFloat, h: CGFloat) -> some View {
         KeyView(key: Key(label, type: .action), isArmed: false, keyHeight: h) {
             HapticEngine.shared.keyTap()
-            KeyDispatcher.shared.sendKeyCommand(input: input,
-                                                modifiers: modifierState.activeModifiers)
+            router.sendCommand(input, modifierState.activeModifiers)
             modifierState.consumeAfterKeypress()
         }
         .frame(width: kw, height: h)
@@ -217,8 +217,7 @@ struct KeyboardView: View {
         // Function keys (F1–F12) and ESC always dispatch as key commands.
         if key.type == .function ||
            (key.type == .action && char == UIKeyCommand.inputEscape) {
-            KeyDispatcher.shared.sendKeyCommand(input: char,
-                                                modifiers: modifierState.activeModifiers)
+            router.sendCommand(char, modifierState.activeModifiers)
             modifierState.consumeAfterKeypress()
             onKey(key)
             return
@@ -236,10 +235,9 @@ struct KeyboardView: View {
 
         if modifierState.activeModifiers.isEmpty ||
            modifierState.activeModifiers == .alphaShift {
-            KeyDispatcher.shared.insertText(text)
+            router.insertText(text)
         } else {
-            KeyDispatcher.shared.sendKeyCommand(input: text,
-                                                modifiers: modifierState.activeModifiers)
+            router.sendCommand(text, modifierState.activeModifiers)
         }
         modifierState.consumeAfterKeypress()
         if modifierState.isShiftArmed { isUpperCase = false }

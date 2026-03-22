@@ -2,7 +2,9 @@ import SwiftUI
 import SwiftData
 
 struct MacroBarView: View {
+    @EnvironmentObject var router: InputRouter
     @Binding var showFKeys: Bool
+    var rowHeight: CGFloat = 60
     @Query(sort: \MacroSlot.sortOrder) var slots: [MacroSlot]
     @Environment(\.modelContext) private var context
     @State private var editingSlot: MacroSlot?
@@ -24,12 +26,7 @@ struct MacroBarView: View {
                     .transition(.opacity)
             }
         }
-        .frame(height: 60)
-        .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color(hex: "#16161E").opacity(0.9))
-                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
-        )
+        .frame(height: rowHeight)
         .sheet(item: $editingSlot) { slot in
             MacroEditSheet(slot: slot)
                 .presentationDetents([.medium])
@@ -42,26 +39,25 @@ struct MacroBarView: View {
     // MARK: - F1–F12 row
 
     private var fKeyRow: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 8) {
-                ForEach(Array(fKeyInputs.enumerated()), id: \.offset) { index, input in
-                    Button("F\(index + 1)") {
-                        HapticEngine.shared.keyTap()
-                        KeyDispatcher.shared.sendKeyCommand(input: input, modifiers: [])
-                    }
-                    .font(.system(size: 12, weight: .medium, design: .monospaced))
-                    .foregroundColor(Color(hex: "#E8E8F0"))
-                    .frame(width: 44, height: 44)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color(hex: "#1C1C24"))
-                            .overlay(RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
-                    )
+        HStack(spacing: 6) {
+            ForEach(Array(fKeyInputs.enumerated()), id: \.offset) { index, input in
+                Button("F\(index + 1)") {
+                    HapticEngine.shared.keyTap()
+                    router.sendCommand(input, [])
                 }
+                .font(.system(size: 12, weight: .medium, design: .monospaced))
+                .foregroundColor(Color(hex: "#E8E8F0"))
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .fill(Color(hex: "#1C1C24"))
+                        .overlay(RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color(hex: "#2E2E3E"), lineWidth: 1))
+                )
             }
-            .padding(.horizontal, 8)
         }
+        .padding(.vertical, 6)
+        .padding(.trailing, 82)
     }
 
     // MARK: - Macro row
@@ -71,17 +67,16 @@ struct MacroBarView: View {
             HStack(spacing: 8) {
                 ForEach(slots) { slot in
                     MacroSlotView(slot: slot) {
-                        KeyDispatcher.shared.sendMacro(keyCode: slot.keyCode,
-                                                       modifiers: slot.modifiers)
+                        router.sendMacro(keyCode: slot.keyCode, modifiers: slot.modifiers)
                     } onLongPress: {
                         editingSlot = slot
                     }
-                    .frame(width: 64, height: 44)
+                    .frame(width: 64).frame(maxHeight: .infinity)
                 }
 
                 addButton
             }
-            .padding(.horizontal, 8)
+        .padding(.vertical, 6)
         }
     }
 
@@ -101,6 +96,6 @@ struct MacroBarView: View {
                     .foregroundColor(Color(hex: "#4A9EFF"))
             }
         }
-        .frame(width: 44, height: 44)
+        .frame(width: 44).frame(maxHeight: .infinity)
     }
 }
