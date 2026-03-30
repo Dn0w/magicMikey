@@ -1,4 +1,10 @@
-# magicMice — Project Specification
+# magicMikey — Project Specification
+
+## Claude Memory
+Project memory lives at `.claude/memory/` inside this repo.
+Load `MEMORY.md` there at the start of each session for full context.
+
+---
 
 > An iOS app that transforms your iPad into a hardware keyboard + gesture control surface when used with an external display.
 
