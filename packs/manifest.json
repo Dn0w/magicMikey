@@ -6,7 +6,7 @@
       "label": "Pinyin — Simplified Chinese",
       "engine": "rime",
       "sizeBytes": 8388608,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-luna-pinyin.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-luna-pinyin.zip",
       "inputMethodIds": ["pinyin-simp"]
     },
     {
@@ -14,7 +14,7 @@
       "label": "Pinyin — Traditional Chinese",
       "engine": "rime",
       "sizeBytes": 8388608,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-luna-pinyin-tw.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-luna-pinyin-tw.zip",
       "inputMethodIds": ["pinyin-trad"]
     },
     {
@@ -22,7 +22,7 @@
       "label": "Bopomofo / Zhuyin (注音)",
       "engine": "rime",
       "sizeBytes": 2097152,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-bopomofo.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-bopomofo.zip",
       "inputMethodIds": ["bopomofo"]
     },
     {
@@ -30,7 +30,7 @@
       "label": "Cangjie 5 (倉頡)",
       "engine": "rime",
       "sizeBytes": 3145728,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-cangjie.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-cangjie.zip",
       "inputMethodIds": ["cangjie"]
     },
     {
@@ -38,7 +38,7 @@
       "label": "Wubi 86 (五笔)",
       "engine": "rime",
       "sizeBytes": 4194304,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-wubi.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-wubi.zip",
       "inputMethodIds": ["wubi"]
     },
     {
@@ -46,7 +46,7 @@
       "label": "Cantonese — Jyutping (粵語)",
       "engine": "rime",
       "sizeBytes": 5242880,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/rime-jyutping.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/rime-jyutping.zip",
       "inputMethodIds": ["jyutping"]
     },
     {
@@ -54,7 +54,7 @@
       "label": "Arabic (عربي)",
       "engine": "ime",
       "sizeBytes": 12288,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-arabic.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/ime-arabic.zip",
       "inputMethodIds": ["ime-arabic"]
     },
     {
@@ -62,7 +62,7 @@
       "label": "Hindi (हिन्दी)",
       "engine": "ime",
       "sizeBytes": 10240,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-hindi.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/ime-hindi.zip",
       "inputMethodIds": ["ime-hindi"]
     },
     {
@@ -70,7 +70,7 @@
       "label": "Greek (Ελληνικά)",
       "engine": "ime",
       "sizeBytes": 8192,
-      "downloadURL": "https://github.com/Dn0w/magicMice/releases/download/packs-v1/ime-greek.zip",
+      "downloadURL": "https://github.com/Dn0w/magicMikey/releases/download/packs-v1/ime-greek.zip",
       "inputMethodIds": ["ime-greek"]
     }
   ]

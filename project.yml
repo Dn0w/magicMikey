@@ -1,6 +1,6 @@
-name: magicMice
+name: magicMikey
 options:
-  bundleIdPrefix: com.magicmice
+  bundleIdPrefix: com.Dn0w
   deploymentTarget:
     iOS: "17.0"
   xcodeVersion: "15.2"
@@ -13,29 +13,29 @@ settings:
     SUPPORTS_MAC_DESIGNED_FOR_IPAD: NO
 
 schemes:
-  magicMice:
+  magicMikey:
     build:
       targets:
-        magicMice: all
-        magicMiceKeyboard: all
+        magicMikey: all
+        magicMikeyKeyboard: all
     run:
       config: Debug
     archive:
       config: Release
 
 targets:
-  magicMice:
+  magicMikey:
     type: application
     platform: iOS
     sources:
       - path: magicMice
     dependencies:
-      - target: magicMiceKeyboard
+      - target: magicMikeyKeyboard
         embed: true
     info:
       path: magicMice/Resources/Info.plist
       properties:
-        CFBundleDisplayName: magicMice
+        CFBundleDisplayName: magicMikey
         CFBundleShortVersionString: "1.0"
         CFBundleVersion: "1"
         LSRequiresIPhoneOS: true
@@ -47,18 +47,17 @@ targets:
         UISupportedInterfaceOrientations~ipad:
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        UIRequiresFullScreen: true
         UIApplicationSupportsIndirectInputEvents: true
         UILaunchScreen: {}
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.Dn0w.magicMice
+        PRODUCT_BUNDLE_IDENTIFIER: com.Dn0w.magicMikey
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: MU335F3K6A
 
-  magicMiceKeyboard:
+  magicMikeyKeyboard:
     type: app-extension
     platform: iOS
     sources:
@@ -77,7 +76,7 @@ targets:
     info:
       path: KeyboardExtension/Info.plist
       properties:
-        CFBundleDisplayName: magicMice Keyboard
+        CFBundleDisplayName: magicMikey Keyboard
         CFBundleShortVersionString: "1.0"
         CFBundleVersion: "1"
         NSExtension:
@@ -90,15 +89,7 @@ targets:
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).KeyboardViewController
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.Dn0w.magicMice.keyboard
+        PRODUCT_BUNDLE_IDENTIFIER: com.Dn0w.magicMikey.keyboard
         CODE_SIGN_IDENTITY: "Apple Development"
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: MU335F3K6A
-
-  magicMiceTests:
-    type: bundle.unit-test
-    platform: iOS
-    sources:
-      - path: magicMiceTests
-    dependencies:
-      - target: magicMice

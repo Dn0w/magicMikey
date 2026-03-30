@@ -2,7 +2,7 @@ import SwiftUI
 import SwiftData
 
 @main
-struct magicMiceApp: App {
+struct magicMikeyApp: App {
     @StateObject private var router: InputRouter = {
         let r = InputRouter()
         r.insertText   = { KeyDispatcher.shared.insertText($0) }

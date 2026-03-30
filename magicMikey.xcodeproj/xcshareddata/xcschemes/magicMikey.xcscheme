@@ -15,10 +15,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "34B983E067980AEE7E900C10"
-               BuildableName = "magicMice.app"
-               BlueprintName = "magicMice"
-               ReferencedContainer = "container:magicMice.xcodeproj">
+               BlueprintIdentifier = "FA27C0D68506367C6D4E8B52"
+               BuildableName = "magicMikey.app"
+               BlueprintName = "magicMikey"
+               ReferencedContainer = "container:magicMikey.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -29,10 +29,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D735562360C96183430D09E3"
-               BuildableName = "magicMiceKeyboard.appex"
-               BlueprintName = "magicMiceKeyboard"
-               ReferencedContainer = "container:magicMice.xcodeproj">
+               BlueprintIdentifier = "620B95362CCC44787E4CC218"
+               BuildableName = "magicMikeyKeyboard.appex"
+               BlueprintName = "magicMikeyKeyboard"
+               ReferencedContainer = "container:magicMikey.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +46,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "34B983E067980AEE7E900C10"
-            BuildableName = "magicMice.app"
-            BlueprintName = "magicMice"
-            ReferencedContainer = "container:magicMice.xcodeproj">
+            BlueprintIdentifier = "FA27C0D68506367C6D4E8B52"
+            BuildableName = "magicMikey.app"
+            BlueprintName = "magicMikey"
+            ReferencedContainer = "container:magicMikey.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -69,10 +69,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "34B983E067980AEE7E900C10"
-            BuildableName = "magicMice.app"
-            BlueprintName = "magicMice"
-            ReferencedContainer = "container:magicMice.xcodeproj">
+            BlueprintIdentifier = "FA27C0D68506367C6D4E8B52"
+            BuildableName = "magicMikey.app"
+            BlueprintName = "magicMikey"
+            ReferencedContainer = "container:magicMikey.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <CommandLineArguments>
@@ -88,10 +88,10 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "34B983E067980AEE7E900C10"
-            BuildableName = "magicMice.app"
-            BlueprintName = "magicMice"
-            ReferencedContainer = "container:magicMice.xcodeproj">
+            BlueprintIdentifier = "FA27C0D68506367C6D4E8B52"
+            BuildableName = "magicMikey.app"
+            BlueprintName = "magicMikey"
+            ReferencedContainer = "container:magicMikey.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

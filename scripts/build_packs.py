@@ -4,7 +4,7 @@ build_packs.py — Download Rime schemas + jQuery.IME rules, package as zips,
                  and upload to a GitHub release.
 
 Usage:
-    python3 scripts/build_packs.py [--release packs-v1] [--repo Dn0w/magicMice]
+    python3 scripts/build_packs.py [--release packs-v1] [--repo Dn0w/magicMikey]
 
 Requires:
     - Python 3.9+
@@ -19,7 +19,7 @@ from typing import Optional, List
 # ─── Config ───────────────────────────────────────────────────────────────────
 
 RELEASE_TAG  = "packs-v1"
-GITHUB_REPO  = "Dn0w/magicMice"
+GITHUB_REPO  = "Dn0w/magicMikey"
 RIME_RAW     = "https://raw.githubusercontent.com/rime/{repo}/master/{file}"
 OPENCC_RAW   = "https://raw.githubusercontent.com/BYVoid/OpenCC/master/data/config/{file}"
 
@@ -251,7 +251,7 @@ def ensure_release(tag: str, repo: str):
         ["gh", "release", "create", tag,
          "--repo", repo,
          "--title", f"Language Packs ({tag})",
-         "--notes", "Downloadable input method packs for magicMice.",
+         "--notes", "Downloadable input method packs for magicMikey.",
          "--prerelease"],
         check=True,
     )
